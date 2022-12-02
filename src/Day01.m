@@ -10,23 +10,25 @@ typedef OFArray<OFNumber *> *Elf;
 - (instancetype)initWithStream:(OFStream *)stream {
     self = [super init];
 
-    OFMutableArray<OFMutableArray<OFNumber *> *> *elves = [OFMutableArray array];
-    OFMutableArray<OFNumber *> *latestElf = [OFMutableArray array];
-    [elves addObject:latestElf];
+    if(self) {
+        OFMutableArray<OFMutableArray<OFNumber *> *> *elves = [OFMutableArray array];
+        OFMutableArray<OFNumber *> *latestElf = [OFMutableArray array];
+        [elves addObject:latestElf];
 
-    OFString *line;
-    while((line = [stream readLine])) {
-        line = [line stringByDeletingEnclosingWhitespaces];
+        OFString *line;
+        while((line = [stream readLine])) {
+            line = [line stringByDeletingEnclosingWhitespaces];
 
-        if([line length] == 0) {
-            latestElf = [OFMutableArray array];
-            [elves addObject:latestElf];
-        } else {
-            [latestElf addObject:@(line.longLongValue)];
+            if([line length] == 0) {
+                latestElf = [OFMutableArray array];
+                [elves addObject:latestElf];
+            } else {
+                [latestElf addObject:@(line.longLongValue)];
+            }
         }
-    }
 
-    _elves = (OFArray<Elf> *)elves;
+        _elves = (OFArray<Elf> *)elves;
+    }
     return self;
 }
 

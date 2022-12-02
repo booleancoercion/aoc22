@@ -1,0 +1,2 @@
+touch src/*
+bear -- make

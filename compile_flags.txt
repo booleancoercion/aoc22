@@ -1,0 +1,4 @@
+-ObjC
+-Wall
+-Wpedantic
+-fobjc-arc

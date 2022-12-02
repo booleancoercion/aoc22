@@ -83,14 +83,14 @@ static OFArray<Class> *getDays(void) {
     @try {
         [OFStdOut writeFormat:@"Part 1 output: %@\n", [day runPart1]];
     } @catch(id error) {
-        [OFStdErr writeFormat:@"Unable to run part 1:%@\n", error];
+        [OFStdErr writeFormat:@"Unable to run part 1: %@\n", error];
         [OFApplication terminateWithStatus:5];
     }
 
     @try {
         [OFStdOut writeFormat:@"Part 2 output: %@\n", [day runPart2]];
     } @catch(id error) {
-        [OFStdErr writeFormat:@"Unable to run part 2:%@\n", error];
+        [OFStdErr writeFormat:@"Unable to run part 2: %@\n", error];
         [OFApplication terminateWithStatus:5];
     }
     // clang-format on

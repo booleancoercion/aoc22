@@ -2,3 +2,4 @@
 -Wall
 -Wpedantic
 -fobjc-arc
+-Wno-gnu-auto-type

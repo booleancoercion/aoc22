@@ -10,8 +10,8 @@ OF_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithStream:(OFStream *)stream;
 
-- (OFValue *)runPart1;
-- (OFValue *)runPart2;
+- (OFObject *)runPart1;
+- (OFObject *)runPart2;
 @end
 
 OF_ASSUME_NONNULL_END

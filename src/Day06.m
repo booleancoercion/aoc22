@@ -10,11 +10,11 @@
 }
 - (instancetype)initWithStream:(OFStream *)stream {
     self = [super init];
-    if(self) {
-        _inner = [stream readLine]; // there is only 1 line
-        _len = [_inner UTF8StringLength];
-        _chars = [_inner UTF8String]; // utf8 contains ascii so this is fine
-    }
+
+    _inner = [stream readLine]; // there is only 1 line
+    _len = [_inner UTF8StringLength];
+    _chars = [_inner UTF8String]; // utf8 contains ascii so this is fine
+
     return self;
 }
 

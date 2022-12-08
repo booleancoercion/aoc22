@@ -42,15 +42,15 @@ void splitRange(OFString *input, int *out1, int *out2) {
 
 - (instancetype)initWithRanges:(int)x1 endx:(int)x2 starty:(int)y1 endy:(int)y2 {
     self = [super init];
-    if(self) {
-        if(x1 > x2 || y1 > y2) {
-            @throw @"Invalid range!";
-        }
-        _x1 = x1;
-        _x2 = x2;
-        _y1 = y1;
-        _y2 = y2;
+
+    if(x1 > x2 || y1 > y2) {
+        @throw @"Invalid range!";
     }
+    _x1 = x1;
+    _x2 = x2;
+    _y1 = y1;
+    _y2 = y2;
+
     return self;
 }
 
@@ -70,15 +70,15 @@ void splitRange(OFString *input, int *out1, int *out2) {
 }
 - (instancetype)initWithStream:(OFStream *)stream {
     self = [super init];
-    if(self) {
-        var pairs = [OFMutableArray<ElfPair *> array];
 
-        OFString *line;
-        while((line = [stream readLine])) {
-            [pairs addObject:[ElfPair elfPairWithLine:line]];
-        }
-        _pairs = pairs;
+    var pairs = [OFMutableArray<ElfPair *> array];
+
+    OFString *line;
+    while((line = [stream readLine])) {
+        [pairs addObject:[ElfPair elfPairWithLine:line]];
     }
+    _pairs = pairs;
+
     return self;
 }
 

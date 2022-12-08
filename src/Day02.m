@@ -89,12 +89,12 @@ static outcome_t outcomeFromChar(char c) {
 
 - (instancetype)initWithMoves:(move_t)opponentMove playerMove:(move_t)playerMove {
     self = [super init];
-    if(self) {
-        _outcomeMissing = YES;
-        _playerMoveMissing = NO;
-        _opponentMove = opponentMove;
-        _playerMove = playerMove;
-    }
+
+    _outcomeMissing = YES;
+    _playerMoveMissing = NO;
+    _opponentMove = opponentMove;
+    _playerMove = playerMove;
+
     return self;
 }
 
@@ -108,12 +108,12 @@ static outcome_t outcomeFromChar(char c) {
 
 - (instancetype)initWithMoveAndOutcome:(move_t)opponentMove outcome:(outcome_t)outcome {
     self = [super init];
-    if(self) {
-        _outcomeMissing = NO;
-        _playerMoveMissing = YES;
-        _opponentMove = opponentMove;
-        _outcome = outcome;
-    }
+
+    _outcomeMissing = NO;
+    _playerMoveMissing = YES;
+    _opponentMove = opponentMove;
+    _outcome = outcome;
+
     return self;
 }
 
@@ -178,20 +178,20 @@ static int calculateScore(OFArray<Game *> *games) {
 }
 - (instancetype)initWithStream:(OFStream *)stream {
     self = [super init];
-    if(self) {
-        OFMutableArray<Game *> *games1 = [OFMutableArray array];
-        OFMutableArray<Game *> *games2 = [OFMutableArray array];
 
-        OFString *line;
-        while((line = [stream readLine])) {
-            line = [line stringByDeletingEnclosingWhitespaces];
-            [games1 addObject:[Game gameWithMovesString:line]];
-            [games2 addObject:[Game gameWithMoveAndOutcomeString:line]];
-        }
+    OFMutableArray<Game *> *games1 = [OFMutableArray array];
+    OFMutableArray<Game *> *games2 = [OFMutableArray array];
 
-        _games1 = games1;
-        _games2 = games2;
+    OFString *line;
+    while((line = [stream readLine])) {
+        line = [line stringByDeletingEnclosingWhitespaces];
+        [games1 addObject:[Game gameWithMovesString:line]];
+        [games2 addObject:[Game gameWithMoveAndOutcomeString:line]];
     }
+
+    _games1 = games1;
+    _games2 = games2;
+
     return self;
 }
 

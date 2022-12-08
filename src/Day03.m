@@ -31,12 +31,12 @@ size_t getIndex(char c) {
 // This method expects `line` to have no whitespace.
 - (instancetype)initWithLine:(OFString *)line {
     self = [super init];
-    if(self) {
-        _line = line;
-        _len = [line cStringLengthWithEncoding:OFStringEncodingUTF8] >> 1;
-        _comp1 = [line cStringWithEncoding:OFStringEncodingUTF8];
-        _comp2 = &_comp1[_len];
-    }
+
+    _line = line;
+    _len = [line cStringLengthWithEncoding:OFStringEncodingUTF8] >> 1;
+    _comp1 = [line cStringWithEncoding:OFStringEncodingUTF8];
+    _comp2 = &_comp1[_len];
+
     return self;
 }
 
@@ -81,16 +81,16 @@ size_t getIndex(char c) {
 }
 - (instancetype)initWithStream:(OFStream *)stream {
     self = [super init];
-    if(self) {
-        OFMutableArray<Rucksack *> *rucksacks = [OFMutableArray array];
 
-        OFString *line;
-        while((line = [stream readLine])) {
-            [rucksacks addObject:[Rucksack rucksackWithLine:line]];
-        }
+    OFMutableArray<Rucksack *> *rucksacks = [OFMutableArray array];
 
-        _rucksacks = rucksacks;
+    OFString *line;
+    while((line = [stream readLine])) {
+        [rucksacks addObject:[Rucksack rucksackWithLine:line]];
     }
+
+    _rucksacks = rucksacks;
+
     return self;
 }
 - (OFValue *)runPart1 {

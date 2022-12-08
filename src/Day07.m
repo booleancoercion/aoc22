@@ -29,12 +29,11 @@ static InputLine *parseLine(OFString *line) {
 
 - (instancetype)initWithName:(OFString *)name {
     self = [super init];
-    if(self) {
-        _name = name;
-        _cachedSize = 0;
-        _didCalculateSize = NO;
-        _contents = [OFMutableDictionary dictionary];
-    }
+
+    _name = name;
+    _cachedSize = 0;
+    _didCalculateSize = NO;
+    _contents = [OFMutableDictionary dictionary];
 
     return self;
 }
@@ -71,10 +70,9 @@ static InputLine *parseLine(OFString *line) {
 
 - (instancetype)initWithNameAndSize:(OFString *)name size:(unsigned long long)size {
     self = [super init];
-    if(self) {
-        _name = name;
-        _size = size;
-    }
+
+    _name = name;
+    _size = size;
 
     return self;
 }
@@ -85,57 +83,57 @@ static InputLine *parseLine(OFString *line) {
 }
 - (instancetype)initWithStream:(OFStream *)stream {
     self = [super init];
-    if(self) {
-        Dir *root = [[Dir alloc] initWithName:@"/"];
-        OFMutableArray<Dir *> *stack = [OFMutableArray arrayWithObject:root];
 
-        OFString *line;
-        while((line = [stream readLine])) {
-            let parsed = parseLine(line);
+    Dir *root = [[Dir alloc] initWithName:@"/"];
+    OFMutableArray<Dir *> *stack = [OFMutableArray arrayWithObject:root];
 
-            if([parsed isMemberOfClass:[CDCommand class]]) {
-                CDCommand *cmd = (CDCommand *)parsed;
+    OFString *line;
+    while((line = [stream readLine])) {
+        let parsed = parseLine(line);
 
-                if([cmd.dir isEqual:@".."]) {
-                    if(stack.count == 1) {
-                        @throw @"Attempted to pop the root directory!";
-                    }
+        if([parsed isMemberOfClass:[CDCommand class]]) {
+            CDCommand *cmd = (CDCommand *)parsed;
 
-                    [stack removeLastObject];
-                } else if([cmd.dir isEqual:@"/"]) {
-                    if(stack.count > 1) {
-                        OFRange allButFirst = {.location = 1, .length = stack.count - 1};
-                        [stack removeObjectsInRange:allButFirst];
-                    }
-                } else {
-                    FSNode *node = stack.lastObject.contents[cmd.dir];
-                    if(![node isMemberOfClass:[Dir class]]) {
-                        @throw @"Attempted to cd into something that isn't a directory!";
-                    }
-
-                    Dir *dir = (Dir *)node;
-                    [stack addObject:dir];
+            if([cmd.dir isEqual:@".."]) {
+                if(stack.count == 1) {
+                    @throw @"Attempted to pop the root directory!";
                 }
-            } else if([parsed isMemberOfClass:[LSCommand class]]) {
-                // do nothing? idk
-            } else if([parsed isMemberOfClass:[DirEntry class]]) {
-                DirEntry *entry = (DirEntry *)parsed;
 
-                stack.lastObject.contents[entry.name] = [[Dir alloc] initWithName:entry.name];
-            } else if([parsed isMemberOfClass:[FileEntry class]]) {
-                FileEntry *entry = (FileEntry *)parsed;
-
-                stack.lastObject.contents[entry.name] =
-                    [[File alloc] initWithNameAndSize:entry.name size:entry.size];
+                [stack removeLastObject];
+            } else if([cmd.dir isEqual:@"/"]) {
+                if(stack.count > 1) {
+                    OFRange allButFirst = {.location = 1, .length = stack.count - 1};
+                    [stack removeObjectsInRange:allButFirst];
+                }
             } else {
-                OF_UNREACHABLE
+                FSNode *node = stack.lastObject.contents[cmd.dir];
+                if(![node isMemberOfClass:[Dir class]]) {
+                    @throw @"Attempted to cd into something that isn't a directory!";
+                }
+
+                Dir *dir = (Dir *)node;
+                [stack addObject:dir];
             }
+        } else if([parsed isMemberOfClass:[LSCommand class]]) {
+            // do nothing? idk
+        } else if([parsed isMemberOfClass:[DirEntry class]]) {
+            DirEntry *entry = (DirEntry *)parsed;
+
+            stack.lastObject.contents[entry.name] = [[Dir alloc] initWithName:entry.name];
+        } else if([parsed isMemberOfClass:[FileEntry class]]) {
+            FileEntry *entry = (FileEntry *)parsed;
+
+            stack.lastObject.contents[entry.name] = [[File alloc] initWithNameAndSize:entry.name
+                                                                                 size:entry.size];
+        } else {
+            OF_UNREACHABLE
         }
-
-        [root size]; // calculate all sizes
-
-        _root = root;
     }
+
+    [root size]; // calculate all sizes
+
+    _root = root;
+
     return self;
 }
 
@@ -178,9 +176,9 @@ static InputLine *parseLine(OFString *line) {
 @implementation CDCommand
 - (instancetype)initWithDir:(OFString *)dir {
     self = [super init];
-    if(self) {
-        _dir = dir;
-    }
+
+    _dir = dir;
+
     return self;
 }
 @end
@@ -188,9 +186,9 @@ static InputLine *parseLine(OFString *line) {
 @implementation DirEntry
 - (instancetype)initWithName:(OFString *)name {
     self = [super init];
-    if(self) {
-        _name = name;
-    }
+
+    _name = name;
+
     return self;
 }
 @end
@@ -198,10 +196,10 @@ static InputLine *parseLine(OFString *line) {
 @implementation FileEntry
 - (instancetype)initWithNameAndSize:(OFString *)name size:(unsigned long long)size {
     self = [super init];
-    if(self) {
-        _name = name;
-        _size = size;
-    }
+
+    _name = name;
+    _size = size;
+
     return self;
 }
 @end

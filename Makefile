@@ -3,7 +3,7 @@ headers := $(wildcard src/*.h)
 
 bin/build: $(files) $(headers)
 	mkdir -p bin
-	clang $(files) `cat compile_flags.txt` `objfw-config --all` -save-temps=obj -o bin/build
+	clang $(files) -g `cat compile_flags.txt` `objfw-config --all` -save-temps=obj -o bin/build
 	@echo
 
 clean:

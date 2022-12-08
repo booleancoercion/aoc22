@@ -83,15 +83,25 @@ static OFArray<Class> *getDays(void) {
     @try {
         [OFStdOut writeFormat:@"Part 1 output: %@\n", [day runPart1]];
     } @catch(id error) {
-        [OFStdErr writeFormat:@"Unable to run part 1: %@\n", error];
-        [OFApplication terminateWithStatus:5];
+        if ([error isMemberOfClass:[OFNotImplementedException class]]) {
+            [OFStdErr writeLine:@"Part 1 is not implemented!"];
+            [OFApplication terminateWithStatus:5];
+        } else {
+            [OFStdErr writeLine:@"Part 1 threw an exception:"];
+            @throw error;
+        }
     }
 
     @try {
         [OFStdOut writeFormat:@"Part 2 output: %@\n", [day runPart2]];
     } @catch(id error) {
-        [OFStdErr writeFormat:@"Unable to run part 2: %@\n", error];
-        [OFApplication terminateWithStatus:5];
+        if ([error isMemberOfClass:[OFNotImplementedException class]]) {
+            [OFStdErr writeLine:@"Part 2 is not implemented!"];
+            [OFApplication terminateWithStatus:5];
+        } else {
+            [OFStdErr writeLine:@"Part 2 threw an exception:"];
+            @throw error;
+        }
     }
     // clang-format on
 

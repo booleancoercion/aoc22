@@ -1,4 +1,5 @@
 #import "IntMatrix.h"
+#import "LongVec.h"
 #import "Point.h"
 #import "misc.h"
 #import <ObjFW/ObjFW.h>

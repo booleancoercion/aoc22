@@ -1,3 +1,6 @@
+#import "IntMatrix.h"
+#import "Point.h"
+#import "misc.h"
 #import <ObjFW/ObjFW.h>
 
 #define var __auto_type

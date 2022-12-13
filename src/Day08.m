@@ -7,39 +7,7 @@
 - (instancetype)initWithStream:(OFStream *)stream {
     self = [super init];
 
-    let data = [stream readDataUntilEndOfStream];
-    let string = [OFString stringWithData:data encoding:OFStringEncodingASCII];
-
-    __block size_t lineLength = 0;
-    __block size_t lineCount = 0;
-    [string enumerateLinesUsingBlock:^(OFString *line, BOOL *stop) {
-        if([line isEqual:@""]) {
-            *stop = YES;
-            return;
-        }
-
-        if(lineLength == 0) {
-            lineLength = line.length;
-        }
-
-        lineCount += 1;
-    }];
-
-    _trees = [IntMatrix matrixWithWidthHeightValue:lineLength height:lineCount value:0];
-
-    let chars = [string UTF8String];
-    let len = [string UTF8StringLength];
-
-    size_t matIdx = 0;
-    for(size_t idx = 0; idx < len; idx++) {
-        if(chars[idx] == '\n') {
-            continue;
-        }
-
-        [_trees setRaw:matIdx value:chars[idx] - '0'];
-
-        matIdx += 1;
-    }
+    _trees = [IntMatrix matrixWithStream:stream];
 
     return self;
 }

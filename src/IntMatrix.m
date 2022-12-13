@@ -10,6 +10,14 @@
     return [[self alloc] initWithWidthHeightValue:width height:height value:value];
 }
 
++ (instancetype)matrixWithStream:(OFStream *)stream {
+    return [[self alloc] initWithStream:stream];
+}
+
++ (instancetype)matrixWithStream:(OFStream *)stream offsetChar:(char)offsetChar {
+    return [[self alloc] initWithStream:stream offsetChar:offsetChar];
+}
+
 - (instancetype)initWithWidthHeightValue:(size_t)width height:(size_t)height value:(int)value {
     self = [super init];
 
@@ -29,6 +37,48 @@
     _inner = [[OFMutableData dataWithItemsNoCopy:_inner
                                            count:width * height * sizeof(*_inner)
                                     freeWhenDone:YES] mutableItems];
+
+    return self;
+}
+
+- (instancetype)initWithStream:(OFStream *)stream {
+    return [self initWithStream:stream offsetChar:'0'];
+}
+
+- (instancetype)initWithStream:(OFStream *)stream offsetChar:(char)offsetChar {
+    OFData *data = [stream readDataUntilEndOfStream];
+    OFString *string = [OFString stringWithData:data encoding:OFStringEncodingASCII];
+
+    __block size_t lineLength = 0;
+    __block size_t lineCount = 0;
+    [string enumerateLinesUsingBlock:^(OFString *line, BOOL *stop) {
+        if([line isEqual:@""]) {
+            *stop = YES;
+            return;
+        }
+
+        if(lineLength == 0) {
+            lineLength = line.length;
+        }
+
+        lineCount += 1;
+    }];
+
+    self = [self initWithWidthHeightValue:lineLength height:lineCount value:0];
+
+    const char *chars = [string UTF8String];
+    size_t len = [string UTF8StringLength];
+
+    size_t matIdx = 0;
+    for(size_t idx = 0; idx < len; idx++) {
+        if(chars[idx] == '\n') {
+            continue;
+        }
+
+        [self setRaw:matIdx value:chars[idx] - offsetChar];
+
+        matIdx += 1;
+    }
 
     return self;
 }
